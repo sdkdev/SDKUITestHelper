@@ -65,7 +65,8 @@ Important:
 ### Pull Request workflow (`.github/workflows/ci.yml`)
 
 - Runs on pull requests.
-- Build-only matrix on `macos-15`.
+- Build-only matrix on `macos-26`.
+- Explicitly selects `Xcode 26.3`.
 - Targets: macOS, iOS Simulator 26.2, tvOS Simulator 26.2.
 
 ### Release workflow (`.github/workflows/release.yml`)
