@@ -2,7 +2,6 @@
 
 Fluent UI test helpers for XCTest that work with SwiftUI, UIKit, and AppKit accessibility elements.
 
-[![Pull Request](https://github.com/sascha/SDKUITestHelper/actions/workflows/ci.yml/badge.svg)](https://github.com/sascha/SDKUITestHelper/actions/workflows/ci.yml)
 ![Swift 6](https://img.shields.io/badge/Swift-6.0%2B-orange.svg)
 ![Platforms](https://img.shields.io/badge/Platforms-iOS%2015%20%7C%20macOS%2012%20%7C%20tvOS%2015%20%7C%20visionOS%201-blue.svg)
 ![SPM](https://img.shields.io/badge/SPM-supported-brightgreen.svg)
