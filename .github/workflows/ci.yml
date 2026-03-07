@@ -1,0 +1,43 @@
+name: Pull Request
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: macos-15
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macOS (latest)
+            key: macos
+            destination: "platform=macOS"
+          - name: iOS Simulator (26)
+            key: ios26
+            destination: "platform=iOS Simulator,name=iPhone 17,OS=26.2"
+          - name: tvOS Simulator (26)
+            key: tvos26
+            destination: "platform=tvOS Simulator,name=Apple TV,OS=26.2"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build package
+        run: |
+          xcodebuild \
+            -scheme SDKUITestHelper \
+            -destination '${{ matrix.destination }}' \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData-${{ matrix.key }}" \
+            build
