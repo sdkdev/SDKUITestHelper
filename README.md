@@ -3,7 +3,7 @@
 Fluent UI test helpers for XCTest that work with SwiftUI, UIKit, and AppKit accessibility elements.
 
 ![Swift 6](https://img.shields.io/badge/Swift-6.0%2B-orange.svg)
-![Platforms](https://img.shields.io/badge/Platforms-iOS%2015%20%7C%20macOS%2012%20%7C%20tvOS%2015%20%7C%20visionOS%201-blue.svg)
+![Platforms](https://img.shields.io/badge/Platforms-iOS%2015%20%7C%20macOS%2012%20%7C%20visionOS%201-blue.svg)
 ![SPM](https://img.shields.io/badge/SPM-supported-brightgreen.svg)
 
 ## Why SDKUITestHelper
@@ -32,7 +32,6 @@ app.button("login")
 - Swift 6+
 - iOS 15+
 - macOS 12+
-- tvOS 15+
 - visionOS 1+
 
 ## Installation

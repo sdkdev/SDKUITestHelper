@@ -23,9 +23,6 @@ jobs:
           - name: iOS Simulator (26)
             key: ios26
             destination: "platform=iOS Simulator,name=iPhone 17,OS=26.2"
-          - name: tvOS Simulator (26)
-            key: tvos26
-            destination: "platform=tvOS Simulator,name=Apple TV,OS=26.2"
 
     steps:
       - name: Check out repository

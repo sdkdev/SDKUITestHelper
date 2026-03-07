@@ -15,7 +15,6 @@ Guidance for coding agents working in this repository.
 - Minimum platforms:
   - iOS 15+
   - macOS 12+
-  - tvOS 15+
   - visionOS 1+
 - Version source of truth: numeric Git tags (semver format: `major.minor.patch`, no `v` prefix)
 
@@ -27,7 +26,7 @@ Guidance for coding agents working in this repository.
   - `XCUIApplication+Extension.swift`: Lookup API (`button`, `label`, `toggle`, etc.)
   - `UIElements/`: Typed wrappers (`SDKUITestButton`, `SDKUITestLabel`, `SDKUITestLink`, `SDKUITestSwitch`)
 - `Tests/SDKUITestHelperTests/`: Minimal placeholder tests
-- `.github/workflows/ci.yml`: PR build matrix (macOS + iOS 26 + tvOS 26)
+- `.github/workflows/ci.yml`: PR build matrix (macOS + iOS 26)
 - `.github/workflows/release.yml`: Auto-release on `main`
 
 ## Build And Validation
@@ -39,10 +38,6 @@ Use these commands from repo root:
 - Xcode builds:
   - `xcodebuild -scheme SDKUITestHelper -destination 'platform=macOS' build`
   - `xcodebuild -scheme SDKUITestHelper -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.2' build`
-  - `xcodebuild -scheme SDKUITestHelper -destination 'platform=tvOS Simulator,name=Apple TV,OS=26.2' build`
-
-Important:
-- tvOS currently fails due to `XCUIElement.tap()` availability in the wrapper implementation. Do not assume tvOS build is green until interaction logic is made tvOS-compatible.
 
 ## Coding Conventions
 
@@ -67,7 +62,7 @@ Important:
 - Runs on pull requests.
 - Build-only matrix on `macos-26`.
 - Explicitly selects `Xcode 26.3`.
-- Targets: macOS, iOS Simulator 26.2, tvOS Simulator 26.2.
+- Targets: macOS, iOS Simulator 26.2.
 
 ### Release workflow (`.github/workflows/release.yml`)
 
