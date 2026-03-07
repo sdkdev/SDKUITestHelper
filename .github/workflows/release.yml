@@ -31,8 +31,6 @@ jobs:
       - name: Compute next version
         id: version
         run: |
-          START_VERSION="0.1.0"
-          FILE_VERSION="$(cat VERSION 2>/dev/null || echo "$START_VERSION")"
           LATEST_TAG="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)"
 
           validate_semver() {
@@ -43,13 +41,8 @@ jobs:
             [ -n "$A" ] && [ -n "$B" ] && [ -n "$C" ]
           }
 
-          if ! validate_semver "$FILE_VERSION"; then
-            echo "Invalid VERSION format: $FILE_VERSION"
-            exit 1
-          fi
-
           if [ -z "$LATEST_TAG" ]; then
-            NEXT_VERSION="$FILE_VERSION"
+            NEXT_VERSION="0.1.0"
           else
             if ! validate_semver "$LATEST_TAG"; then
               echo "Invalid tag format: $LATEST_TAG"
@@ -62,23 +55,23 @@ jobs:
 
           echo "next=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Update VERSION and create tag
+      - name: Create and push tag
+        id: tag
         env:
           NEXT_VERSION: ${{ steps.version.outputs.next }}
         run: |
           if git rev-parse "${NEXT_VERSION}" >/dev/null 2>&1; then
             echo "Tag ${NEXT_VERSION} already exists. Skipping."
+            echo "created=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "$NEXT_VERSION" > VERSION
-          git add VERSION
-          git commit -m "chore(release): ${NEXT_VERSION} [skip ci]"
           git tag "${NEXT_VERSION}"
-          git push origin main
           git push origin "${NEXT_VERSION}"
+          echo "created=true" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub release
+        if: steps.tag.outputs.created == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.next }}

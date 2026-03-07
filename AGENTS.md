@@ -17,7 +17,7 @@ Guidance for coding agents working in this repository.
   - macOS 12+
   - tvOS 15+
   - visionOS 1+
-- Version source of truth: `VERSION` file (semver format: `major.minor.patch`)
+- Version source of truth: numeric Git tags (semver format: `major.minor.patch`, no `v` prefix)
 
 ## Repository Layout
 
@@ -73,15 +73,14 @@ Important:
 - Trigger: push to `main`
 - Behavior:
   1. Read latest numeric semver tag if present.
-  2. If no tags exist, start from `VERSION` (initially `0.1.0`).
-  3. Bump patch version.
-  4. Update `VERSION`, commit, create numeric tag (no `v` prefix), push, create GitHub release.
+  2. If no tags exist, start at `0.1.0`.
+  3. Bump patch version from the latest tag.
+  4. Create numeric tag (no `v` prefix), push it, and create GitHub release.
 
 Do not change tag format away from numeric semver unless explicitly requested.
 
 ## Safety Rules
 
-- Never remove or rewrite workflows/version logic without user request.
+- Never remove or rewrite workflows/release logic without user request.
 - Do not delete source files unless the user explicitly asks for deletion.
 - If unexpected staged/deleted files appear, stop and ask before committing.
-
