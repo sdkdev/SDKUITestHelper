@@ -83,6 +83,8 @@ final class LoginUITests: XCTestCase {
 - `link(_:)`, `link(_:at:)`
 - `toggle(_:)`
 - `label(_:)`
+- `textField(_:)`
+- `secureTextField(_:)`
 - `element(_:)`, `element(_:at:)`
 - `navigationElement(at:)`, `navigationElement(in:at:)`
 
@@ -90,6 +92,7 @@ Element assertions/interactions (`SDKUITestElement`):
 
 - `isExisting(timeout:)`
 - `isNotExisting()`
+- `isNotExisting(timeout:)`
 - `validate(title:)`
 - `validate(isEnabled:)`
 - `validate(isSelected:)`
@@ -97,6 +100,7 @@ Element assertions/interactions (`SDKUITestElement`):
 - `isHittable()`
 - `isNotHittable()`
 - `tap()`
+- `typeText(_:)` (text field wrapper)
 
 Switch-specific (`SDKUITestSwitch`):
 

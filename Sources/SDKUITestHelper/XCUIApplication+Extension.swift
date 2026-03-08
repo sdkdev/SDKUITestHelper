@@ -117,6 +117,40 @@ public extension XCUIApplication {
         SDKUITestLabel(element: staticTexts[identifier])
     }
 
+    /// Returns a text field wrapper for the matching accessibility identifier.
+    ///
+    /// Use this for plain text input controls.
+    ///
+    /// ```swift
+    /// app.textField("username")
+    ///     .isExisting()
+    ///     .tap()
+    ///     .typeText("john")
+    /// ```
+    ///
+    /// - Parameter identifier: Accessibility identifier.
+    /// - Returns: A `SDKUITestTextField`.
+    func textField(_ identifier: String) -> SDKUITestTextField {
+        SDKUITestTextField(element: textFields[identifier])
+    }
+
+    /// Returns a secure text field wrapper for the matching accessibility identifier.
+    ///
+    /// Use this for password or token input controls.
+    ///
+    /// ```swift
+    /// app.secureTextField("token")
+    ///     .isExisting()
+    ///     .tap()
+    ///     .typeText("secret")
+    /// ```
+    ///
+    /// - Parameter identifier: Accessibility identifier.
+    /// - Returns: A `SDKUITestTextField`.
+    func secureTextField(_ identifier: String) -> SDKUITestTextField {
+        SDKUITestTextField(element: secureTextFields[identifier])
+    }
+
     /// Returns a generic element wrapper for the matching accessibility identifier.
     ///
     /// Use this when you do not care about a more specific control type and only
