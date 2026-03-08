@@ -65,6 +65,23 @@ public class SDKUITestElement: SDKUIElement {
         return self
     }
 
+    /// Verifies that the element disappears within the timeout.
+    ///
+    /// Use this when UI dismissal is asynchronous, such as after tapping
+    /// a button that closes a sheet or alert.
+    ///
+    /// ```swift
+    /// app.element("loading-overlay")
+    ///     .isNotExisting(timeout: 4)
+    /// ```
+    ///
+    /// - Parameter timeout: The number of seconds to wait for non-existence.
+    /// - Returns: The same element wrapper for chaining.
+    @discardableResult public func isNotExisting(timeout: TimeInterval) -> Self {
+        XCTAssertTrue(element.waitForNonExistence(timeout: timeout), "\(typeName) with identifier \(element.identifier) still exists.")
+        return self
+    }
+
     /// Verifies that the element label matches the expected title.
     ///
     /// This is primarily useful for static text, buttons, and navigation items
