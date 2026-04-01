@@ -151,6 +151,22 @@ public extension XCUIApplication {
         SDKUITestTextField(element: secureTextFields[identifier])
     }
 
+    /// Returns the first search field wrapper.
+    ///
+    /// Use this for the system search bar provided by `.searchable`.
+    ///
+    /// ```swift
+    /// app.searchField()
+    ///     .isExisting()
+    ///     .tap()
+    ///     .typeText("query")
+    /// ```
+    ///
+    /// - Returns: A `SDKUITestTextField`.
+    func searchField() -> SDKUITestTextField {
+        SDKUITestTextField(element: searchFields.firstMatch)
+    }
+
     /// Returns a generic element wrapper for the matching accessibility identifier.
     ///
     /// Use this when you do not care about a more specific control type and only
