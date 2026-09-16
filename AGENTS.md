@@ -23,9 +23,8 @@ Guidance for coding agents working in this repository.
 - `Sources/SDKUITestHelper/`
   - `SDKUITestElement.swift`: Base chainable assertions/actions
   - `SDKUIElement.swift`: Core protocol
-  - `SDKUILookupScope.swift`: Lookup API (`button`, `label`, `toggle`, etc.), shared by every scope
-  - `XCUIApplication+Extension.swift`: App-wide lookup scope plus `window(_:)`
-  - `SDKUITestWindow.swift`: Lookup scope limited to one window
+  - `XCUIApplication+Extension.swift`: App-wide lookup API (`button`, `label`, `toggle`, etc.) plus `window(_:)`
+  - `SDKUITestWindow.swift`: The same lookups, restricted to one window
   - `XCUIElement+UniversalClick.swift`: The one place the macOS `click` / non-macOS `tap` difference lives (internal)
   - `UIElements/`: Typed wrappers (`SDKUITestButton`, `SDKUITestLabel`, `SDKUITestLink`, `SDKUITestSwitch`)
 - `Tests/SDKUITestHelperTests/`: Minimal placeholder tests plus a compile-time check of the public lookup API

@@ -79,7 +79,7 @@ final class LoginUITests: XCTestCase {
 
 ## API Overview
 
-Lookups (`SDKUILookupScope`, available on `XCUIApplication` and on `SDKUITestWindow`):
+`XCUIApplication` extension:
 
 - `button(_:)`, `button(_:at:)`, `button(labelContaining:)`
 - `link(_:)`, `link(_:at:)`
@@ -90,10 +90,7 @@ Lookups (`SDKUILookupScope`, available on `XCUIApplication` and on `SDKUITestWin
 - `searchField()`
 - `element(_:)`, `element(_:at:)`
 - `navigationElement(at:)`, `navigationElement(in:at:)`
-
-`XCUIApplication` extension:
-
-- `window(_:)` — a lookup scope limited to one window
+- `window(_:)` — narrows further lookups to a single window
 
 Element assertions/interactions (`SDKUITestElement`):
 
@@ -118,7 +115,7 @@ Switch-specific (`SDKUITestSwitch`):
 
 Window scope (`SDKUITestWindow`):
 
-- every lookup from `SDKUILookupScope`, restricted to that window
+- `button(_:)`, `button(_:at:)`, `button(labelContaining:)`, `link(_:)`, `toggle(_:)`, `label(_:)`, `textField(_:)`, `secureTextField(_:)`, `searchField()`, `element(_:)`, `element(_:at:)` — all restricted to that window
 - `element` — the window itself, for assertions on the window rather than its content
 
 ## Tapping vs. clicking

@@ -9,8 +9,8 @@ import XCTest
 /// Compile-time check of the public lookup API.
 ///
 /// The queries need a running app, so this is never executed — it fails the
-/// build instead if a lookup is renamed or an app-level lookup stops being
-/// reachable after a change to `SDKUILookupScope`.
+/// build instead if a lookup is renamed, or if an app-level and window-scoped
+/// lookup drift apart.
 @MainActor
 private func lookupAPIRemainsAvailable() {
     let app = XCUIApplication()
