@@ -186,7 +186,9 @@ public class SDKUITestElement: SDKUIElement {
     /// Taps the wrapped accessibility element.
     ///
     /// This method performs the standard XCTest tap action and returns the same
-    /// wrapper so the interaction can remain part of a chain.
+    /// wrapper so the interaction can remain part of a chain. Tests that also
+    /// run on macOS should prefer `universalClick()`, because macOS 27 no longer
+    /// delivers synthesized taps to AppKit controls.
     ///
     /// ```swift
     /// app.button("save")
@@ -197,6 +199,24 @@ public class SDKUITestElement: SDKUIElement {
     /// - Returns: The same element wrapper for chaining.
     @discardableResult public func tap() -> Self {
         element.tap()
+        return self
+    }
+
+    /// Performs the primary pointer interaction for the current platform.
+    ///
+    /// This is the cross-platform counterpart to `tap()`: it clicks on macOS and
+    /// taps everywhere else, so the same chain works in an iOS and a macOS test
+    /// target. Prefer it over `tap()` for new tests.
+    ///
+    /// ```swift
+    /// app.button("save")
+    ///     .isHittable()
+    ///     .universalClick()
+    /// ```
+    ///
+    /// - Returns: The same element wrapper for chaining.
+    @discardableResult public func universalClick() -> Self {
+        element.universalClick()
         return self
     }
 }

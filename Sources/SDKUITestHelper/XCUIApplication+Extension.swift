@@ -1,7 +1,8 @@
 import XCTest
 
+/// Shared by the app-wide lookups below and by the window-scoped ones in `SDKUITestWindow`.
 @MainActor
-private func indexedElement(from query: XCUIElementQuery, at index: Int, description: String) -> XCUIElement {
+func indexedElement(from query: XCUIElementQuery, at index: Int, description: String) -> XCUIElement {
     guard index >= 0 else {
         XCTFail("\(description) requested with invalid negative index \(index).")
         return query.firstMatch
@@ -239,4 +240,42 @@ public extension XCUIApplication {
         return SDKUITestElement(element: indexedElement(from: query, at: index, description: "Element with identifier \(identifier)"))
     }
 
+    /// Returns the first button whose label contains the given text.
+    ///
+    /// Use this for buttons that carry no accessibility identifier, or whose
+    /// title is composed at runtime. Prefer the identifier-based lookups
+    /// whenever an identifier is available — they are exact and cheaper to
+    /// evaluate.
+    ///
+    /// The match is case- and diacritic-sensitive.
+    ///
+    /// ```swift
+    /// app.button(labelContaining: "Unsubscribe")
+    ///     .isExisting()
+    ///     .universalClick()
+    /// ```
+    ///
+    /// - Parameter text: Substring the button label must contain.
+    /// - Returns: A `SDKUITestButton`.
+    func button(labelContaining text: String) -> SDKUITestButton {
+        SDKUITestButton(element: buttons.matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch)
+    }
+
+    /// Returns a lookup scope limited to the window with the given title.
+    ///
+    /// Use this when the same control exists in more than one window, so an
+    /// app-wide query would be ambiguous — a search field in the main window's
+    /// sidebar and in a dedicated search window, for example.
+    ///
+    /// ```swift
+    /// app.window("Repository Search").searchField()
+    ///     .isExisting()
+    ///     .universalClick()
+    /// ```
+    ///
+    /// - Parameter title: Title of the window, as shown in its title bar.
+    /// - Returns: A `SDKUITestWindow`.
+    func window(_ title: String) -> SDKUITestWindow {
+        SDKUITestWindow(window: windows[title])
+    }
 }

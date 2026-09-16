@@ -16,7 +16,7 @@ Instead of long raw XCTest query chains, you can write:
 app.button("login")
     .isExisting()
     .isHittable()
-    .tap()
+    .universalClick()
 ```
 
 ## Features
@@ -24,6 +24,8 @@ app.button("login")
 - Chainable assertions and interactions for common UI test flows.
 - Typed wrappers for buttons, labels, links, and switches.
 - Convenience app lookup API for element selection by identifier and index.
+- `universalClick()` for interactions that work on macOS and iOS from the same chain.
+- Window-scoped lookups for multi-window apps, where an app-wide query is ambiguous.
 - Swift 6 language mode enabled.
 - Swift Package Manager-first setup.
 
@@ -66,7 +68,7 @@ final class LoginUITests: XCTestCase {
         app.button("login")
             .isExisting()
             .isHittable()
-            .tap()
+            .universalClick()
 
         app.label("welcome-title")
             .isExisting()
@@ -79,14 +81,16 @@ final class LoginUITests: XCTestCase {
 
 `XCUIApplication` extension:
 
-- `button(_:)`, `button(_:at:)`
+- `button(_:)`, `button(_:at:)`, `button(labelContaining:)`
 - `link(_:)`, `link(_:at:)`
 - `toggle(_:)`
 - `label(_:)`
 - `textField(_:)`
 - `secureTextField(_:)`
+- `searchField()`
 - `element(_:)`, `element(_:at:)`
 - `navigationElement(at:)`, `navigationElement(in:at:)`
+- `window(_:)` — narrows further lookups to a single window
 
 Element assertions/interactions (`SDKUITestElement`):
 
@@ -100,13 +104,31 @@ Element assertions/interactions (`SDKUITestElement`):
 - `isHittable()`
 - `isNotHittable()`
 - `tap()`
+- `universalClick()`
 - `typeText(_:)` (text field wrapper)
 
 Switch-specific (`SDKUITestSwitch`):
 
 - `isOn()`
 - `isOff()`
-- custom `tap()` handling for nested SwiftUI switch elements
+- custom `tap()` and `universalClick()` handling for nested SwiftUI switch elements
+
+Window scope (`SDKUITestWindow`):
+
+- `button(_:)`, `button(_:at:)`, `button(labelContaining:)`, `link(_:)`, `toggle(_:)`, `label(_:)`, `textField(_:)`, `secureTextField(_:)`, `searchField()`, `element(_:)`, `element(_:at:)` — all restricted to that window
+- `element` — the window itself, for assertions on the window rather than its content
+
+## Tapping vs. clicking
+
+`tap()` always performs `XCUIElement.tap()`. `universalClick()` clicks on macOS and taps
+on every other platform, so one chain works in an iOS and a macOS test target.
+
+Prefer `universalClick()` whenever the tests run on macOS: as of macOS 27 a synthesized
+tap is no longer delivered reliably to AppKit controls — the event takes seconds to
+synthesize and the control never acts on it — while a click still works. `tap()` keeps its
+existing behaviour for tests that rely on it.
+
+Every wrapper offers it, including the nested-switch handling of `SDKUITestSwitch`.
 
 ## More Examples
 
@@ -118,13 +140,30 @@ app.element("settings-row", at: 2)
     .isHittable()
 ```
 
+### Window-scoped lookup
+
+```swift
+app.window("Repository Search").searchField()
+    .isExisting()
+    .universalClick()
+    .typeText("devinbox")
+```
+
+### Button without an identifier
+
+```swift
+app.button(labelContaining: "Unsubscribe")
+    .isExisting()
+    .universalClick()
+```
+
 ### Switch flow
 
 ```swift
 app.toggle("notifications")
     .isExisting()
     .isOff()
-    .tap()
+    .universalClick()
     .isOn()
 ```
 
@@ -133,7 +172,7 @@ app.toggle("notifications")
 ```swift
 app.navigationElement(in: "Details", at: 0)
     .isExisting()
-    .tap()
+    .universalClick()
 ```
 
 ## Contributing
