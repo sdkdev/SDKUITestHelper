@@ -16,7 +16,7 @@ Instead of long raw XCTest query chains, you can write:
 app.button("login")
     .isExisting()
     .isHittable()
-    .tap()
+    .universalClick()
 ```
 
 ## Features
@@ -24,6 +24,7 @@ app.button("login")
 - Chainable assertions and interactions for common UI test flows.
 - Typed wrappers for buttons, labels, links, and switches.
 - Convenience app lookup API for element selection by identifier and index.
+- `universalClick()` for interactions that work on macOS and iOS from the same chain.
 - Swift 6 language mode enabled.
 - Swift Package Manager-first setup.
 
@@ -66,7 +67,7 @@ final class LoginUITests: XCTestCase {
         app.button("login")
             .isExisting()
             .isHittable()
-            .tap()
+            .universalClick()
 
         app.label("welcome-title")
             .isExisting()
@@ -100,13 +101,35 @@ Element assertions/interactions (`SDKUITestElement`):
 - `isHittable()`
 - `isNotHittable()`
 - `tap()`
+- `universalClick()`
 - `typeText(_:)` (text field wrapper)
+
+`XCUIElement` extension:
+
+- `universalClick()`
 
 Switch-specific (`SDKUITestSwitch`):
 
 - `isOn()`
 - `isOff()`
-- custom `tap()` handling for nested SwiftUI switch elements
+- custom `tap()` and `universalClick()` handling for nested SwiftUI switch elements
+
+## Tapping vs. clicking
+
+`tap()` always performs `XCUIElement.tap()`. `universalClick()` clicks on macOS and taps
+on every other platform, so one chain works in an iOS and a macOS test target.
+
+Prefer `universalClick()` whenever the tests run on macOS: as of macOS 27 a synthesized
+tap is no longer delivered reliably to AppKit controls — the event takes seconds to
+synthesize and the control never acts on it — while a click still works. `tap()` keeps its
+existing behaviour for tests that rely on it.
+
+It is available on the wrappers and on `XCUIElement` itself, so raw queries can use the
+same call:
+
+```swift
+app.windows["Search"].searchFields.firstMatch.universalClick()
+```
 
 ## More Examples
 
@@ -124,7 +147,7 @@ app.element("settings-row", at: 2)
 app.toggle("notifications")
     .isExisting()
     .isOff()
-    .tap()
+    .universalClick()
     .isOn()
 ```
 
@@ -133,7 +156,7 @@ app.toggle("notifications")
 ```swift
 app.navigationElement(in: "Details", at: 0)
     .isExisting()
-    .tap()
+    .universalClick()
 ```
 
 ## Contributing

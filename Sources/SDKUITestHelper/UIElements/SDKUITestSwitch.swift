@@ -78,4 +78,28 @@ public class SDKUITestSwitch: SDKUITestElement {
         }
         return self
     }
+
+    /// Performs the platform's primary pointer interaction on the switch.
+    ///
+    /// Same nested-switch handling as `tap()`, but clicks on macOS, where
+    /// synthesized taps are no longer delivered to AppKit controls.
+    ///
+    /// ```swift
+    /// app.toggle("notifications")
+    ///     .isOff()
+    ///     .universalClick()
+    ///     .isOn()
+    /// ```
+    ///
+    /// - Returns: The same element wrapper for chaining.
+    override public func universalClick() -> Self {
+        if element.switches.firstMatch.exists {
+            // Search in SwiftUI `View` for the real switch to interact with.
+            element.switches.firstMatch.universalClick()
+        } else {
+            // Interact with a `UIKit` `UISwitch` or an `AppKit` `NSSwitch`.
+            element.universalClick()
+        }
+        return self
+    }
 }

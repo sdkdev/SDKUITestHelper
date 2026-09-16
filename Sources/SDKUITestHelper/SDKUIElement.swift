@@ -13,4 +13,5 @@ protocol SDKUIElement {
     func validate(title: String) -> Self
     func validate(isEnabled: Bool) -> Self
     func tap() -> Self
+    func universalClick() -> Self
 }
