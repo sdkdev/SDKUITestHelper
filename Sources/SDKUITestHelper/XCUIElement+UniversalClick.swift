@@ -8,18 +8,16 @@
 import Foundation
 import XCTest
 
-public extension XCUIElement {
+extension XCUIElement {
     /// Performs the primary pointer interaction for the current platform.
     ///
-    /// Use this instead of `tap()` in tests that run on macOS. Starting with
-    /// macOS 27, a synthesized tap is no longer delivered reliably to AppKit
-    /// controls — the event takes seconds to synthesize and the control never
-    /// acts on it — while `click()` still works. `click()` exists only on
+    /// Starting with macOS 27, a synthesized tap is no longer delivered reliably
+    /// to AppKit controls — the event takes seconds to synthesize and the control
+    /// never acts on it — while `click()` still works. `click()` exists only on
     /// macOS, so every other platform keeps using `tap()`.
     ///
-    /// ```swift
-    /// app.buttons["save"].universalClick()
-    /// ```
+    /// This is the single place the platform difference is expressed; the public
+    /// `universalClick()` on the wrappers routes through it.
     func universalClick() {
         #if os(macOS)
             click()

@@ -25,6 +25,7 @@ app.button("login")
 - Typed wrappers for buttons, labels, links, and switches.
 - Convenience app lookup API for element selection by identifier and index.
 - `universalClick()` for interactions that work on macOS and iOS from the same chain.
+- Window-scoped lookups for multi-window apps, where an app-wide query is ambiguous.
 - Swift 6 language mode enabled.
 - Swift Package Manager-first setup.
 
@@ -78,16 +79,21 @@ final class LoginUITests: XCTestCase {
 
 ## API Overview
 
-`XCUIApplication` extension:
+Lookups (`SDKUILookupScope`, available on `XCUIApplication` and on `SDKUITestWindow`):
 
-- `button(_:)`, `button(_:at:)`
+- `button(_:)`, `button(_:at:)`, `button(labelContaining:)`
 - `link(_:)`, `link(_:at:)`
 - `toggle(_:)`
 - `label(_:)`
 - `textField(_:)`
 - `secureTextField(_:)`
+- `searchField()`
 - `element(_:)`, `element(_:at:)`
 - `navigationElement(at:)`, `navigationElement(in:at:)`
+
+`XCUIApplication` extension:
+
+- `window(_:)` — a lookup scope limited to one window
 
 Element assertions/interactions (`SDKUITestElement`):
 
@@ -104,15 +110,16 @@ Element assertions/interactions (`SDKUITestElement`):
 - `universalClick()`
 - `typeText(_:)` (text field wrapper)
 
-`XCUIElement` extension:
-
-- `universalClick()`
-
 Switch-specific (`SDKUITestSwitch`):
 
 - `isOn()`
 - `isOff()`
 - custom `tap()` and `universalClick()` handling for nested SwiftUI switch elements
+
+Window scope (`SDKUITestWindow`):
+
+- every lookup from `SDKUILookupScope`, restricted to that window
+- `element` — the window itself, for assertions on the window rather than its content
 
 ## Tapping vs. clicking
 
@@ -124,12 +131,7 @@ tap is no longer delivered reliably to AppKit controls — the event takes secon
 synthesize and the control never acts on it — while a click still works. `tap()` keeps its
 existing behaviour for tests that rely on it.
 
-It is available on the wrappers and on `XCUIElement` itself, so raw queries can use the
-same call:
-
-```swift
-app.windows["Search"].searchFields.firstMatch.universalClick()
-```
+Every wrapper offers it, including the nested-switch handling of `SDKUITestSwitch`.
 
 ## More Examples
 
@@ -139,6 +141,23 @@ app.windows["Search"].searchFields.firstMatch.universalClick()
 app.element("settings-row", at: 2)
     .isExisting()
     .isHittable()
+```
+
+### Window-scoped lookup
+
+```swift
+app.window("Repository Search").searchField()
+    .isExisting()
+    .universalClick()
+    .typeText("devinbox")
+```
+
+### Button without an identifier
+
+```swift
+app.button(labelContaining: "Unsubscribe")
+    .isExisting()
+    .universalClick()
 ```
 
 ### Switch flow
