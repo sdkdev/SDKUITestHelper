@@ -28,6 +28,8 @@ Guidance for coding agents working in this repository.
   - `XCUIElement+UniversalClick.swift`: The one place the macOS `click` / non-macOS `tap` difference lives (internal)
   - `UIElements/`: Typed wrappers (`SDKUITestButton`, `SDKUITestLabel`, `SDKUITestLink`, `SDKUITestSwitch`)
 - `Tests/SDKUITestHelperTests/`: Minimal placeholder tests plus a compile-time check of the public lookup API
+- `skills/sdk-ui-test-helper/SKILL.md`: Agent skill that teaches consumers how to write tests with the package
+- `.claude/skills/sdk-ui-test-helper`: Relative symlink to the skill above, so it is active while working in this repo
 - `.github/workflows/ci.yml`: PR build matrix (macOS + iOS 26)
 - `.github/workflows/release.yml`: Auto-release on `main`
 
@@ -56,6 +58,7 @@ Use these commands from repo root:
   - when-to-use guidance
   - compact usage snippet
 - Keep README aligned with actual API names and platform support.
+- Keep `skills/sdk-ui-test-helper/SKILL.md` aligned with the public API and README whenever a lookup, wrapper, or interaction method is added, renamed, or removed.
 
 ## CI And Release Expectations
 
