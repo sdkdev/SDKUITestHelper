@@ -28,6 +28,7 @@ app.button("login")
 - Window-scoped lookups for multi-window apps, where an app-wide query is ambiguous.
 - Swift 6 language mode enabled.
 - Swift Package Manager-first setup.
+- Agent skill for Claude Code and compatible tools.
 
 ## Requirements
 
@@ -53,6 +54,23 @@ dependencies: [
     .package(url: "https://github.com/sascha/SDKUITestHelper.git", from: "0.1.0")
 ]
 ```
+
+## Agent Skill
+
+The repository ships a skill in `skills/sdk-ui-test-helper/` that teaches coding agents
+(Claude Code and other tools that read `SKILL.md`) how to write tests with this package:
+chain order, `universalClick()` over `tap()`, window scoping, switch handling, and the raw
+XCTest patterns to rewrite.
+
+Symlink it into your user-wide skills to use it in every project:
+
+```sh
+ln -s /path/to/SDKUITestHelper/skills/sdk-ui-test-helper ~/.claude/skills/sdk-ui-test-helper
+```
+
+Or into one app's `.claude/skills/` directory to use it only there. Copying the directory
+works as well. The skill is versioned with the package, so update the checkout or copy when
+you update the package.
 
 ## Quick Start
 
